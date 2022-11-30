@@ -49,7 +49,7 @@ class ThemeFfastController
                 if (request('filter')['sort'] == 'view') {
                     return $movie->orderBy('view_total', 'desc');
                 }
-            })->paginate(36);
+            })->paginate(30);
 
             return view('themes::themeffast.catalog', [
                 'data' => $data,
@@ -67,6 +67,17 @@ class ThemeFfastController
         /** @var Movie */
         $movie = Movie::fromCache()->find($movie);
 
+        if(count($movie->episodes)) {
+            $episode = $movie->episodes
+                ->sortBy([['server', 'asc']])
+                ->groupBy('server')
+                ->first()
+                ->sortByDesc('name', SORT_NATURAL)
+                ->groupBy('name')
+                ->first();
+        } else $episode = null;
+
+
         if (is_null($movie)) abort(404);
 
         $movie->generateSeoTags();
@@ -83,22 +94,23 @@ class ThemeFfastController
             Cache::put($movie_related_cache_key, $movie_related, setting('site_cache_ttl', 5 * 60));
         }
 
-        return view('themes::themeffast.single', [
+        return view('themes::themeffast.film', [
             'currentMovie' => $movie,
             'title' => $movie->getTitle(),
-            'movie_related' => $movie_related
+            'movie_related' => $movie_related,
+            'episode' => $episode ? $episode->sortByDesc("type")->first() : null
         ]);
     }
 
-    public function getEpisode(Request $request, $movie, $slug)
+    public function getEpisode(Request $request, $movie, $slug, $id)
     {
         $movie = Movie::fromCache()->find($movie)->load('episodes');
 
         if (is_null($movie)) abort(404);
 
         /** @var Episode */
-        $episode = $movie->episodes->when(request('id'), function ($collection) {
-            return $collection->where('id', request('id'));
+        $episode = $movie->episodes->when($id, function ($collection, $id) {
+            return $collection->where('id', $id);
         })->firstWhere('slug', $slug);
 
         if (is_null($episode)) abort(404);
@@ -116,8 +128,7 @@ class ThemeFfastController
             $movie_related = $movie->categories[0]->movies()->inRandomOrder()->limit(12)->get();
             Cache::put($movie_related_cache_key, $movie_related, setting('site_cache_ttl', 5 * 60));
         }
-
-        return view('themes::themeffast.episode', [
+        return view('themes::themeffast.film', [
             'currentMovie' => $movie,
             'movie_related' => $movie_related,
             'episode' => $episode,
@@ -125,12 +136,12 @@ class ThemeFfastController
         ]);
     }
 
-    public function reportEpisode(Request $request, $movie, $slug)
+    public function reportEpisode(Request $request, $movie, $slug, $id)
     {
         $movie = Movie::fromCache()->find($movie)->load('episodes');
 
-        $episode = $movie->episodes->when(request('id'), function ($collection) {
-            return $collection->where('id', request('id'));
+        $episode = $movie->episodes->when($id, function ($collection, $id) {
+            return $collection->where('id', $id);
         })->firstWhere('slug', $slug);
 
         $episode->update([
@@ -162,7 +173,7 @@ class ThemeFfastController
 
         $category->generateSeoTags();
 
-        $movies = $category->movies()->orderBy('created_at', 'desc')->paginate(36);
+        $movies = $category->movies()->orderBy('created_at', 'desc')->paginate(30);
 
         return view('themes::themeffast.catalog', [
             'data' => $movies,
@@ -181,7 +192,7 @@ class ThemeFfastController
 
         $region->generateSeoTags();
 
-        $movies = $region->movies()->orderBy('created_at', 'desc')->paginate(36);
+        $movies = $region->movies()->orderBy('created_at', 'desc')->paginate(30);
 
         return view('themes::themeffast.catalog', [
             'data' => $movies,
@@ -200,7 +211,7 @@ class ThemeFfastController
 
         $actor->generateSeoTags();
 
-        $movies = $actor->movies()->orderBy('created_at', 'desc')->paginate(36);
+        $movies = $actor->movies()->orderBy('created_at', 'desc')->paginate(30);
 
         return view('themes::themeffast.catalog', [
             'data' => $movies,
@@ -219,7 +230,7 @@ class ThemeFfastController
 
         $director->generateSeoTags();
 
-        $movies = $director->movies()->orderBy('created_at', 'desc')->paginate(36);
+        $movies = $director->movies()->orderBy('created_at', 'desc')->paginate(30);
 
         return view('themes::themeffast.catalog', [
             'data' => $movies,
@@ -238,7 +249,7 @@ class ThemeFfastController
 
         $tag->generateSeoTags();
 
-        $movies = $tag->movies()->orderBy('created_at', 'desc')->paginate(36);
+        $movies = $tag->movies()->orderBy('created_at', 'desc')->paginate(30);
         return view('themes::themeffast.catalog', [
             'data' => $movies,
             'tag' => $tag,
@@ -252,20 +263,20 @@ class ThemeFfastController
         switch ($slug) {
             case 'phim-de-cu':
                 $section_name = 'Phim Hot Đề Cử';
-                $movies = Movie::where('is_recommended', 1)->orderBy('created_at', 'desc')->paginate(36);
+                $movies = Movie::where('is_recommended', 1)->orderBy('created_at', 'desc')->paginate(30);
                 break;
             case 'phim-chieu-rap':
                 $section_name = 'Phim Chiếu Rạp';
-                $movies = Movie::where('is_shown_in_theater', 1)->orderBy('created_at', 'desc')->paginate(36);
+                $movies = Movie::where('is_shown_in_theater', 1)->orderBy('created_at', 'desc')->paginate(30);
                 break;
             case 'phim-sap-chieu':
                 $section_name = 'Phim Sắp Chiếu';
-                $movies = Movie::where('status', 'trailer')->orderBy('created_at', 'desc')->paginate(36);
+                $movies = Movie::where('status', 'trailer')->orderBy('created_at', 'desc')->paginate(30);
                 break;
             default:
                 $type = $slug == 'phim-le' ? 'single' : 'series';
                 $section_name = $slug == 'phim-le' ? 'Phim Lẻ' : 'Phim Bộ';
-                $movies = Movie::where('type', $type)->orderBy('created_at', 'desc')->paginate(36);
+                $movies = Movie::where('type', $type)->orderBy('created_at', 'desc')->paginate(30);
                 break;
         }
 

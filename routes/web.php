@@ -21,8 +21,10 @@ Route::group([
     Route::get(sprintf('/%s/{tag}', config('ophim.routes.tags', 'tu-khoa')), [ThemeFfastController::class, 'getMovieOfTag'])->name('tags.movies.index');
     Route::get(sprintf('/%s/{region}', config('ophim.routes.region', 'quoc-gia')), [ThemeFfastController::class, 'getMovieOfRegion'])->name('regions.movies.index');
     Route::get(sprintf('/%s/{type}', config('ophim.routes.types', 'danh-sach')), [ThemeFfastController::class, 'getMovieOfType'])->name('types.movies.index');
-    Route::get(sprintf('/%s/{movie}', config('ophim.routes.movie', 'phim')), [ThemeFfastController::class, 'getMovieOverview'])->name('movies.show');
-    Route::get(sprintf('/%s/{movie}/{episode}', config('ophim.routes.movie', 'phim')), [ThemeFfastController::class, 'getEpisode'])->name('episodes.show');
-    Route::post(sprintf('/%s/{movie}/{episode}/report', config('ophim.routes.movie', 'phim')), [ThemeFfastController::class, 'reportEpisode'])->name('episodes.report');
-    Route::post(sprintf('/%s/{movie}/rate', config('ophim.routes.movie', 'phim')), [ThemeFfastController::class, 'rateMovie'])->name('movie.rating');
+    Route::get(sprintf('/%s/{movie}', config('ophim.routes.movie', 'xem-phim')), [ThemeFfastController::class, 'getMovieOverview'])->name('movies.show');
+    Route::get(sprintf('/%s/{movie}/{episode}-{id}', config('ophim.routes.movie', 'xem-phim')), [ThemeFfastController::class, 'getEpisode'])
+        ->where(['movie' => '.+', 'episode' => '.+', 'id' => '[0-9]+'])->name('episodes.show');
+    Route::post(sprintf('/%s/{movie}/{episode}-{id}/report', config('ophim.routes.movie', 'xem-phim')), [ThemeFfastController::class, 'reportEpisode'])
+        ->where(['movie' => '.+', 'episode' => '.+', 'id' => '[0-9]+'])->name('episodes.report');
+    Route::post(sprintf('/%s/{movie}/rate', config('ophim.routes.movie', 'xem-phim')), [ThemeFfastController::class, 'rateMovie'])->name('movie.rating');
 });
