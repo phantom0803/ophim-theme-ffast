@@ -78,7 +78,7 @@
                             key: "{{ Setting::get('jwplayer_license') }}",
                             aspectratio: "16:9",
                             width: "100%",
-                            file: "/themes/xiao/player/1s_blank.mp4",
+                            file: "/themes/ffast/player/1s_blank.mp4",
                             volume: 100,
                             mute: false,
                             autostart: true,
