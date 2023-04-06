@@ -26,17 +26,17 @@
         </div>
         <div class="film-raty">
             <input id="hint_current" type="hidden" value=""/>
-            <input id="score_current" type="hidden" value="{{ number_format($currentMovie->rating_star ?? 0, 1) }}"/>
-            <div id="star" data-score="{{ number_format($currentMovie->rating_star ?? 0, 1) }}"
+            <input id="score_current" type="hidden" value="{{$currentMovie->getRatingStar()}}"/>
+            <div id="star" data-score="{{$currentMovie->getRatingStar()}}"
                  style="cursor: pointer;"></div>
             <span id="hint"></span>
             <div id="div_average" style="">
-                (<span class="average" id="average">{{ number_format($currentMovie->rating_star ?? 0, 1) }}</span>
-                đ/<span id="rate_count"> / {{ $currentMovie->rating_count ?? 0 }}</span> lượt)
+                (<span class="average" id="average">{{$currentMovie->getRatingStar()}}</span>
+                đ/<span id="rate_count"> / {{$currentMovie->getRatingCount()}}</span> lượt)
             </div>
             <span class="hidden" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
-                <meta itemprop="ratingValue" content="{{ number_format($currentMovie->rating_star ?? 0, 1) }}"/>
-                <meta itemprop="ratingcount" content="{{ $currentMovie->rating_count ?? 0 }}"/>
+                <meta itemprop="ratingValue" content="{{$currentMovie->getRatingStar()}}"/>
+                <meta itemprop="ratingcount" content="{{$currentMovie->getRatingCount()}}"/>
                 <meta itemprop="bestRating" content="10"/>
                 <meta itemprop="worstRating" content="1"/>
             </span>

@@ -14,7 +14,7 @@
                     <a href="{{$movie->getUrl()}}">
                         <img class="tray-item-thumbnail"
                              src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-                             data-src="{{$movie->thumb_url}}" alt="{{$movie->name}}">
+                             data-src="{{$movie->getThumbUrl()}}" alt="{{$movie->name}}">
                         <div class="tray-item-description">
                             <span class="tray-item-quality">{{$movie->quality}}</span>
                             <div class="tray-item-title">{{$movie->name}}</div>

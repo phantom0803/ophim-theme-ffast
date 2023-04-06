@@ -30,12 +30,12 @@
                                 <a href="{{$movie->getUrl()}}">
                                     <img class="tray-item-thumbnail"
                                          src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-                                         data-src="{{$movie->thumb_url}}"
+                                         data-src="{{$movie->getThumbUrl()}}"
                                          alt="{{$movie->name}}">
                                     <div class="tray-item-description">
                                         <span class="tray-item-quality">{{$movie->quality}}</span>
                                         <span class="tray-item-point">
-                                            <i class="icon-star"></i> {{number_format($movie->rating_star ?? 0, 1)}}/10
+                                            <i class="icon-star"></i> {{$movie->getRatingStar()}}/10
                                         </span>
                                         <div class="tray-item-title">{{$movie->name}}</div>
                                         <div class="tray-item-meta-info">

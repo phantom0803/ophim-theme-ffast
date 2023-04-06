@@ -15,7 +15,7 @@
                     <a href="{{$movie->getUrl()}}">
                         <img class="tray-item-thumbnail"
                              src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-                             data-src="{{$movie->poster_url ?: $movie->thumb_url}}"
+                             data-src="{{$movie->getPosterUrl()}}"
                              alt="{{$movie->name}} {{$movie->episode_current}}">
                         <div class="tray-item-description">
                             <div class="tray-episode-name">{{$movie->episode_current}}</div>

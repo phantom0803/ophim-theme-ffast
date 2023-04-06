@@ -8,7 +8,7 @@
     <div class="container">
         <div class="player-wrapper" id="player-wrapper">
             @if(!$episode || $episode->link == "")
-                <div style="background-image: url('{{$currentMovie->poster_url ?: $currentMovie->thumb_url}}'); background-size: cover;" class="player-error-display">
+                <div style="background-image: url('{{$currentMovie->getPosterUrl()}}'); background-size: cover;" class="player-error-display">
                     <div style="background: #000000cf;width: 100%;height: 100%">
                         <i class="icon-alert"></i><span class="player-error-message">Phim đang được cập nhật</span>
                     </div>
@@ -128,7 +128,7 @@
                         key: "{{ Setting::get('jwplayer_license') }}",
                         aspectratio: "16:9",
                         width: "100%",
-                        image: "{{ $currentMovie->poster_url ?: $currentMovie->thumb_url }}",
+                        image: "{{ $currentMovie->getPosterUrl() }}",
                         file: link,
                         playbackRateControls: true,
                         playbackRates: [0.25, 0.75, 1, 1.25],

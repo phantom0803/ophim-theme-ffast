@@ -63,10 +63,10 @@ class ThemeFfastController
         ]);
     }
 
-    public function getMovieOverview(Request $request, $movie)
+    public function getMovieOverview(Request $request)
     {
         /** @var Movie */
-        $movie = Movie::fromCache()->find($movie);
+        $movie = Movie::fromCache()->find($request->movie ?: $request->id);
 
         if(count($movie->episodes)) {
             $episode = $movie->episodes
@@ -103,18 +103,17 @@ class ThemeFfastController
         ]);
     }
 
-    public function getEpisode(Request $request, $movie, $slug, $id)
+    public function getEpisode(Request $request)
     {
-        $movie = Movie::fromCache()->find($movie)->load('episodes');
+        $movie = Movie::fromCache()->find($request->movie ?: $request->movie_id)->load('episodes');
 
         if (is_null($movie)) abort(404);
 
         /** @var Episode */
-        $episode = $movie->episodes->when($id, function ($collection, $id) {
-            return $collection->where('id', $id);
-        })->firstWhere('slug', $slug);
-
-        if (is_null($episode)) abort(404);
+        $episode_id = $request->id;
+        $episode = $movie->episodes->when($episode_id, function ($collection, $episode_id) {
+            return $collection->where('id', $episode_id);
+        })->firstWhere('slug', $request->episode);
 
         $episode->generateSeoTags();
 
@@ -165,10 +164,10 @@ class ThemeFfastController
         return response([], 204);
     }
 
-    public function getMovieOfCategory(Request $request, $slug)
+    public function getMovieOfCategory(Request $request)
     {
         /** @var Category */
-        $category = Category::fromCache()->find($slug);
+        $category = Category::fromCache()->find($request->category ?: $request->id);
 
         if (is_null($category)) abort(404);
 
@@ -184,10 +183,10 @@ class ThemeFfastController
         ]);
     }
 
-    public function getMovieOfRegion(Request $request, $slug)
+    public function getMovieOfRegion(Request $request)
     {
         /** @var Region */
-        $region = Region::fromCache()->find($slug);
+        $region = Region::fromCache()->find($request->region ?: $request->id);
 
         if (is_null($region)) abort(404);
 
@@ -203,10 +202,10 @@ class ThemeFfastController
         ]);
     }
 
-    public function getMovieOfActor(Request $request, $slug)
+    public function getMovieOfActor(Request $request)
     {
         /** @var Actor */
-        $actor = Actor::fromCache()->find($slug);
+        $actor = Actor::fromCache()->find($request->actor ?: $request->id);
 
         if (is_null($actor)) abort(404);
 
@@ -222,10 +221,10 @@ class ThemeFfastController
         ]);
     }
 
-    public function getMovieOfDirector(Request $request, $slug)
+    public function getMovieOfDirector(Request $request)
     {
         /** @var Director */
-        $director = Director::fromCache()->find($slug);
+        $director = Director::fromCache()->find($request->director ?: $request->id);
 
         if (is_null($director)) abort(404);
 
@@ -241,10 +240,10 @@ class ThemeFfastController
         ]);
     }
 
-    public function getMovieOfTag(Request $request, $slug)
+    public function getMovieOfTag(Request $request)
     {
         /** @var Tag */
-        $tag = Tag::fromCache()->find($slug);
+        $tag = Tag::fromCache()->find($request->tag ?: $request->id);
 
         if (is_null($tag)) abort(404);
 
@@ -259,10 +258,10 @@ class ThemeFfastController
         ]);
     }
 
-    public function getMovieOfType(Request $request, $slug)
+    public function getMovieOfType(Request $request)
     {
         /** @var Catalog */
-        $catalog = Catalog::fromCache()->find($slug);
+        $catalog = Catalog::fromCache()->find($request->type ?: $request->id);
 
         if (is_null($catalog)) abort(404);
 

@@ -12,7 +12,7 @@
                     <div class="trailer-item" data-id="{{$movie->id}}">
                         <a href="{{$movie->getUrl()}}" class="card">
                             <div class="trailer-poster card-image img-responsive"><img
-                                    src="{{$movie->poster_url ?: $movie->thumb_url}}"
+                                    src="{{$movie->getPosterUrl()}}"
                                     alt="{{$movie->name}}">
                                 <div class="solid solid-visible"><span class="icon icon-play-o"></span></div>
                                 <div class="solid"><span class="icon icon-play-png"></span></div>
@@ -25,7 +25,7 @@
                     <div class="trailer-item" data-id="{{$movie->id}}">
                         <a href="{{$movie->getUrl()}}" class="card">
                             <div class="trailer-poster card-image img-responsive"><img
-                                    src="{{$movie->poster_url ?: $movie->thumb_url}}"
+                                    src="{{$movie->getPosterUrl()}}"
                                     alt="{{$movie->name}}">
                                 <div class="solid solid-visible"><span class="icon icon-play-o-sm"></span></div>
                                 <div class="solid"><span class="icon icon-play-png-sm"></span></div>

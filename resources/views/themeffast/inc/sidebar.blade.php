@@ -4,8 +4,8 @@
         <div class="related-item">
             <a href="{{$movie->getUrl()}}">
                 <img class="related-item-thumbnail"
-                     src="{{$movie->poster_url ?: $movie->thumb_url}}"
-                     data-src="{{$movie->poster_url ?: $movie->thumb_url}}"
+                     src="{{$movie->getPosterUrl()}}"
+                     data-src="{{$movie->getPosterUrl()}}"
                      alt="{{$movie->name}}">
             </a>
             <div class="related-item-meta">

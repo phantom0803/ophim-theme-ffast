@@ -14,7 +14,7 @@
                     <div class="cinema-item">
                         <a href="{{$movie->getUrl()}}" class="card card-inset">
                             <div class="card-image img-responsive">
-                                <img src="{{$movie->thumb_url}}" alt="{{$movie->name}}">
+                                <img src="{{$movie->getThumbUrl()}}" alt="{{$movie->name}}">
                                 <div class="solid">
                                     <span class="icon icon-play-png"></span>
                                 </div>
@@ -23,7 +23,7 @@
                                 <p style="margin-bottom: 10px;">
                                     <label class="label label-main label-xs">{{$movie->quality}}</label>
                                     <span class="pull-right" style="font-size: 15px; color: rgb(255, 255, 255);">
-                                            <i class="icon-star" style="color: rgb(232, 145, 5);"></i> {{number_format($movie->rating_star ?? 0, 1)}}/10 </span>
+                                            <i class="icon-star" style="color: rgb(232, 145, 5);"></i> {{$movie->getRatingStar()}}/10 </span>
                                 </p>
                                 <h3 class="title">{{$movie->name}}</h3>
                                 <p class="subtitle text-inline">

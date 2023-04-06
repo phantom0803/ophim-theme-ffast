@@ -12,7 +12,7 @@
                     <a href="{{$movie->getUrl()}}">
                         <div class="ranking-item-thumbnail">
                             <img src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-                                 data-src="{{$movie->thumb_url}}" alt="{{$movie->name}}"></img>
+                                 data-src="{{$movie->getThumbUrl()}}" alt="{{$movie->name}}"></img>
                         </div>
                         <div class="ranking-item-top top{{$loop->index + 1}}">{{$loop->index + 1}}</div>
                     </a>
