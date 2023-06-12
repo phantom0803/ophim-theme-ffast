@@ -50,7 +50,7 @@ class ThemeFfastController
                 if (request('filter')['sort'] == 'view') {
                     return $movie->orderBy('view_total', 'desc');
                 }
-            })->paginate(30);
+            })->paginate(get_theme_option('per_page_limit'));
 
             return view('themes::themeffast.catalog', [
                 'data' => $data,
@@ -173,7 +173,7 @@ class ThemeFfastController
 
         $category->generateSeoTags();
 
-        $movies = $category->movies()->orderBy('created_at', 'desc')->paginate(30);
+        $movies = $category->movies()->orderBy('created_at', 'desc')->paginate(get_theme_option('per_page_limit'));
 
         return view('themes::themeffast.catalog', [
             'data' => $movies,
@@ -192,7 +192,7 @@ class ThemeFfastController
 
         $region->generateSeoTags();
 
-        $movies = $region->movies()->orderBy('created_at', 'desc')->paginate(30);
+        $movies = $region->movies()->orderBy('created_at', 'desc')->paginate(get_theme_option('per_page_limit'));
 
         return view('themes::themeffast.catalog', [
             'data' => $movies,
@@ -211,7 +211,7 @@ class ThemeFfastController
 
         $actor->generateSeoTags();
 
-        $movies = $actor->movies()->orderBy('created_at', 'desc')->paginate(30);
+        $movies = $actor->movies()->orderBy('created_at', 'desc')->paginate(get_theme_option('per_page_limit'));
 
         return view('themes::themeffast.catalog', [
             'data' => $movies,
@@ -230,7 +230,7 @@ class ThemeFfastController
 
         $director->generateSeoTags();
 
-        $movies = $director->movies()->orderBy('created_at', 'desc')->paginate(30);
+        $movies = $director->movies()->orderBy('created_at', 'desc')->paginate(get_theme_option('per_page_limit'));
 
         return view('themes::themeffast.catalog', [
             'data' => $movies,
@@ -249,7 +249,7 @@ class ThemeFfastController
 
         $tag->generateSeoTags();
 
-        $movies = $tag->movies()->orderBy('created_at', 'desc')->paginate(30);
+        $movies = $tag->movies()->orderBy('created_at', 'desc')->paginate(get_theme_option('per_page_limit'));
         return view('themes::themeffast.catalog', [
             'data' => $movies,
             'tag' => $tag,

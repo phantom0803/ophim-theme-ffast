@@ -52,7 +52,7 @@ class ThemeFfastServiceProvider extends ServiceProvider
                         'name' => 'per_page_limit',
                         'label' => 'Pages limit',
                         'type' => 'number',
-                        'value' => 20,
+                        'value' => 30,
                         'wrapperAttributes' => [
                             'class' => 'form-group col-md-4',
                         ],
